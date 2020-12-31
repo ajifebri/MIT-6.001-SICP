@@ -111,3 +111,34 @@ for all y, (() and y merge-to-form y)
 (boss (bitdiddle ben) computer)
 
 (boss ?who computer)
+
+;; unify
+(?x ?x)
+;; with
+((a ?y c) (a b ?z))
+
+;?x : (a b c)
+;?y : b
+;?z : c
+
+;; unify
+(?x ?x)
+;; with
+((?y a ?w) (b ?v ?z))
+
+;?y : b
+;?v : a
+;?w : ?z
+;?x : (b a ?w)
+
+;; unify
+(?x ?x)
+;; with
+(?y (a . ?y))
+
+;?x : ?y
+;?y : ( a a a ...)
+
+(cons 'a y) = y
+(f y) = y
+
