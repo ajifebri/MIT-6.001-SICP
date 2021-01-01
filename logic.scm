@@ -142,3 +142,37 @@ for all y, (() and y merge-to-form y)
 (cons 'a y) = y
 (f y) = y
 
+(rule (outranked-by ?s ?b)
+   (or (supervisor ?s ?b)
+       (and (supervisor ?s ?m)
+            (outranked-by ?m ?b))))
+
+(rule (outranked-by ?s ?b)
+   (or (supervisor ?s ?b)
+       (and (outranked-by ?m ?b)
+            (supervisor ?s ?m))))
+
+(greek socrates)
+(greek plato)
+(greek zeus)
+(god zeus)
+
+(rule (mortal ?x) (human ?x))
+(rule (fallible ?x) (human ?x))
+
+(rule (human ?x)
+    (and (greek ?x) (not (god ?x))))
+
+(rule (address ?x olympus)
+    (and (greek ?x) (god ?x)))
+
+(rule (perfect ?x)
+    (and (not (mortal ?x))
+         (not (fallible ?x))))
+
+(and (address ?x ?y)
+     (perfect ?x))
+
+(and (perfect ?x)
+     (address ?x ?y))
+
