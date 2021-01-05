@@ -95,4 +95,49 @@ accumulate-arg
     (rest-operands (fetch unev)))
   (goto eval-arg-loop)
 
+eval-last-arg
+  (assign continue accumulate-last-arg)
+  (goto eval-dispatch)
+
+accumulate-last-arg
+  (restore argl)
+  (assign
+    argl
+    (cons (fetch val) (fetch argl)))
+  (restore fun)
+  (goto apply-dispatch)
+
+apply-dispatch
+  (branch (primitive-proc? (fetch fun))
+          primitive-apply)
+  (branch (compound-proc? (fetch fun))
+          compound-apply)
+  (goto unknown-proc-type-error)
+
+primitive-apply
+  (assign
+    val
+    (apply-primitive-proc (fetch fun)
+                          (fetch argl)))
+  (restore continue)
+  (goto (fetch continue))
+
+(define (f a b)
+  (+ a b))
+
+;in the environment E0 where
+;x = 3, y = 4
+(f x y)
+
+compound-apply
+  (assign
+    exp
+    (procedure-body (fetch fun)))
+  (assign
+    env
+    (make-bindings (fetch fun)
+                   (fetch argl)))
+  (restore continue)
+  (goto eval-dispatch)
+
 
